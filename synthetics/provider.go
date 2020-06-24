@@ -62,7 +62,7 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"aws_synthetics_canary": resourceAwsSyntheticsCanary(),
+			"synthetics_canary": resourceAwsSyntheticsCanary(),
 		},
 	}
 	provider.ConfigureFunc = func(d *schema.ResourceData) (interface{}, error) {
