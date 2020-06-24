@@ -1,4 +1,4 @@
-module pmintl.net/terraform-provider-aws-synthetics
+module github.com/MaksymBilenko/terraform-provider-aws-synthetics
 
 go 1.14
 
