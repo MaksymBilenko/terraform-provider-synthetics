@@ -36,8 +36,8 @@ func CanaryStatus(conn *synthetics.Synthetics, name string) resource.StateRefres
 
 func CanaryReady(conn *synthetics.Synthetics, name string) (*synthetics.GetCanaryOutput, error) {
 	stateConf := &resource.StateChangeConf{
-		Pending: []string{synthetics.CanaryStateCreating, synthetics.CanaryStateUpdating},
-		Target:  []string{synthetics.CanaryStateReady},
+		Pending: []string{synthetics.CanaryStateCreating, synthetics.CanaryStateUpdating, synthetics.CanaryStateStopping},
+		Target:  []string{synthetics.CanaryStateReady, synthetics.CanaryStateRunning, synthetics.CanaryStateStopped},
 		Refresh: CanaryStatus(conn, name),
 		Timeout: CanaryCreatedTimeout,
 	}

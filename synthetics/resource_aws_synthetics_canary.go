@@ -157,6 +157,11 @@ func resourceAwsSyntheticsCanary() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"start": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Default:  true,
+			},
 			// "tags": tagsSchema(),
 		},
 	}
@@ -214,6 +219,12 @@ func resourceAwsSyntheticsCanaryCreate(d *schema.ResourceData, meta interface{})
 		return fmt.Errorf("error waiting for Synthetics Canary (%s) creation: %s", d.Id(), err)
 	}
 
+	if d.Get("start").(bool) {
+		_, err = conn.StartCanary(&synthetics.StartCanaryInput{Name: resp.Canary.Name})
+		if err != nil {
+			return fmt.Errorf("error starting Synthetics Canary: %s", err)
+		}
+	}
 	return resourceAwsSyntheticsCanaryRead(d, meta)
 }
 
@@ -322,13 +333,33 @@ func resourceAwsSyntheticsCanaryUpdate(d *schema.ResourceData, meta interface{})
 	}
 
 	if updateFlag {
-		_, err := conn.UpdateCanary(input)
+		canaryStatus, err := conn.GetCanary(&synthetics.GetCanaryInput{Name: aws.String(d.Id())})
+
+		if *canaryStatus.Canary.Status.State == synthetics.CanaryStateRunning {
+			_, err = conn.StopCanary(&synthetics.StopCanaryInput{Name: aws.String(d.Id())})
+			if err != nil {
+				return fmt.Errorf("error stopping Synthetics Canary: %s", err)
+			}
+		}
+
+		if _, err := CanaryReady(conn, d.Id()); err != nil {
+			return fmt.Errorf("error waiting for Synthetics Canary (%s) stopping: %s", d.Id(), err)
+		}
+
+		_, err = conn.UpdateCanary(input)
 		if err != nil {
 			return fmt.Errorf("error updating Synthetics Canary: %s", err)
 		}
 
 		if _, err := CanaryReady(conn, d.Id()); err != nil {
 			return fmt.Errorf("error waiting for Synthetics Canary (%s) updating: %s", d.Id(), err)
+		}
+
+		if d.Get("start").(bool) {
+			_, err = conn.StartCanary(&synthetics.StartCanaryInput{Name: aws.String(d.Id())})
+			if err != nil {
+				return fmt.Errorf("error starting Synthetics Canary: %s", err)
+			}
 		}
 	}
 
@@ -350,7 +381,20 @@ func resourceAwsSyntheticsCanaryDelete(d *schema.ResourceData, meta interface{})
 		Name: aws.String(d.Id()),
 	}
 
-	_, err := conn.DeleteCanary(input)
+	canaryStatus, err := conn.GetCanary(&synthetics.GetCanaryInput{Name: aws.String(d.Id())})
+
+	if *canaryStatus.Canary.Status.State == synthetics.CanaryStateRunning {
+		_, err = conn.StopCanary(&synthetics.StopCanaryInput{Name: aws.String(d.Id())})
+		if err != nil {
+			return fmt.Errorf("error stopping Synthetics Canary: %s", err)
+		}
+	}
+
+	if _, err := CanaryReady(conn, d.Id()); err != nil {
+		return fmt.Errorf("error waiting for Synthetics Canary (%s) stopping: %s", d.Id(), err)
+	}
+
+	_, err = conn.DeleteCanary(input)
 	if err != nil {
 		if isAWSErr(err, synthetics.ErrCodeResourceNotFoundException, "") {
 			return nil
