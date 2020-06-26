@@ -43,8 +43,19 @@ resource "synthetics_canary" "terraform-deploy-test" {
 }
 ```
 
+### Init Linux
+
 ```bash
 mkdir -p terraform.d/plugins/linux_amd64
 wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.1/linux_amd64-terraform-provider-aws-synthetics_v0.0.1 -O terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.1
+chmod +x terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.1
+terraform init
+```
+
+### Init MacOS
+```bash
+mkdir -p terraform.d/plugins/darwin_amd64
+wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.1/darwin_amd64-terraform-provider-aws-synthetics_v0.0.1 -O terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.1
+chmod +x terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.1
 terraform init
 ```
