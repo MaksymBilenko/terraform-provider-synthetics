@@ -190,7 +190,7 @@ jobs:
             dep ensure
         fi
     - name: Build
-      run: go build -v -o ${GOOS}_${GOARCH}-terraform-provider-aws-synthetics_${GITHUB_REF##*/} .
+      run: go build -v -o ${GOOS}_${GOARCH}-terraform-provider-aws-synthetics_${GITHUB_REF##*/}.exe .
 
     - name: Upload the artifacts
       uses: skx/github-action-publish-binaries@master
