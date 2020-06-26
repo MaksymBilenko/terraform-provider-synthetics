@@ -10,7 +10,7 @@ Once this functionality would be marged to terraform aws provider this repositor
 ### main.tf
 ```terraform
 provider "synthetics" {
-  version = "v0.0.1"
+  version = "v0.0.2"
   # assume_role {
   #   role_arn = var.assume_role_arn
   # }
@@ -47,15 +47,15 @@ resource "synthetics_canary" "terraform-deploy-test" {
 
 ```bash
 mkdir -p terraform.d/plugins/linux_amd64
-wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.1/linux_amd64-terraform-provider-aws-synthetics_v0.0.1 -O terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.1
-chmod +x terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.1
+wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.2/linux_amd64-terraform-provider-aws-synthetics_v0.0.2 -O terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.2
+chmod +x terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.2
 terraform init
 ```
 
 ### Init MacOS
 ```bash
 mkdir -p terraform.d/plugins/darwin_amd64
-wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.1/darwin_amd64-terraform-provider-aws-synthetics_v0.0.1 -O terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.1
-chmod +x terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.1
+wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.2/darwin_amd64-terraform-provider-aws-synthetics_v0.0.2 -O terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.2
+chmod +x terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.2
 terraform init
 ```
