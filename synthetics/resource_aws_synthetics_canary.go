@@ -262,8 +262,10 @@ func resourceAwsSyntheticsCanaryRead(d *schema.ResourceData, meta interface{}) e
 
 	d.Set("arn", arn)
 
-	if err := d.Set("vpc_config", flattenAwsSyntheticsCanaryVpcConfig(canary.VpcConfig)); err != nil {
-		return fmt.Errorf("error setting vpc config: %s", err)
+	if canary.VpcConfig != nil {
+		if err := d.Set("vpc_config", flattenAwsSyntheticsCanaryVpcConfig(canary.VpcConfig)); err != nil {
+			return fmt.Errorf("error setting vpc config: %s", err)
+		}
 	}
 
 	if err := d.Set("run_config", flattenAwsSyntheticsCanaryRunConfig(canary.RunConfig)); err != nil {
