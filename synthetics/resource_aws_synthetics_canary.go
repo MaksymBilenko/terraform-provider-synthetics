@@ -392,10 +392,10 @@ func resourceAwsSyntheticsCanaryDelete(d *schema.ResourceData, meta interface{})
 		if err != nil {
 			return fmt.Errorf("error stopping Synthetics Canary: %s", err)
 		}
-	}
 
-	if _, err := CanaryReady(conn, d.Id()); err != nil {
-		return fmt.Errorf("error waiting for Synthetics Canary (%s) stopping: %s", d.Id(), err)
+		if _, err := CanaryReady(conn, d.Id()); err != nil {
+			return fmt.Errorf("error waiting for Synthetics Canary (%s) stopping: %s", d.Id(), err)
+		}
 	}
 
 	_, err = conn.DeleteCanary(input)
