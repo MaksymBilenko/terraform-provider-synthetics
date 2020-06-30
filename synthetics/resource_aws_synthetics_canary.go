@@ -126,6 +126,7 @@ func resourceAwsSyntheticsCanary() *schema.Resource {
 				Type:     schema.TypeList,
 				MaxItems: 1,
 				Optional: true,
+				ForceNew: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"security_group_ids": {
@@ -140,6 +141,7 @@ func resourceAwsSyntheticsCanary() *schema.Resource {
 						},
 						"vpc_id": {
 							Type:     schema.TypeString,
+							ForceNew: true,
 							Computed: true,
 						},
 					},
