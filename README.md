@@ -10,7 +10,7 @@ Once this functionality would be marged to terraform aws provider this repositor
 ### main.tf
 ```terraform
 provider "synthetics" {
-  version = "v0.0.4"
+  version = "v0.0.5"
   # assume_role {
   #   role_arn = var.assume_role_arn
   # }
@@ -32,6 +32,10 @@ resource "synthetics_canary" "terraform-deploy-test" {
   artifact_s3_location = "s3://${aws_s3_bucket.synthetic_artifacts.id}/canary/"
   zip_file             = data.archive_file.synthetic.output_path
   handler              = "synthetic.handler"
+  run_config {
+    memory_in_mb       = 1024
+    timeout_in_seconds = 60
+  }
   vpc_config {
     security_group_ids = var.synthetic_vpc_config.security_group_ids
     subnet_ids         = var.synthetic_vpc_config.subnet_ids
@@ -47,15 +51,15 @@ resource "synthetics_canary" "terraform-deploy-test" {
 
 ```bash
 mkdir -p terraform.d/plugins/linux_amd64
-wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.4/linux_amd64-terraform-provider-aws-synthetics_v0.0.4 -O terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.4
-chmod +x terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.4
+wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.5/linux_amd64-terraform-provider-aws-synthetics_v0.0.5 -O terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.5
+chmod +x terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.0.5
 terraform init
 ```
 
 ### Init MacOS
 ```bash
 mkdir -p terraform.d/plugins/darwin_amd64
-wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.4/darwin_amd64-terraform-provider-aws-synthetics_v0.0.4 -O terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.4
-chmod +x terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.4
+wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.0.5/darwin_amd64-terraform-provider-aws-synthetics_v0.0.5 -O terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.5
+chmod +x terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.0.5
 terraform init
 ```

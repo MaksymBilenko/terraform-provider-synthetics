@@ -97,7 +97,12 @@ func resourceAwsSyntheticsCanary() *schema.Resource {
 						"timeout_in_seconds": {
 							Type:     schema.TypeInt,
 							Optional: true,
-							Computed: true,
+							Default:  60,
+						},
+						"memory_in_mb": {
+							Type:     schema.TypeInt,
+							Optional: true,
+							Default:  960,
 						},
 					},
 				},
@@ -484,6 +489,7 @@ func expandAwsSyntheticsCanaryRunConfig(l []interface{}) *synthetics.CanaryRunCo
 
 	codeConfig := &synthetics.CanaryRunConfigInput{
 		TimeoutInSeconds: aws.Int64(int64(m["timeout_in_seconds"].(int))),
+		MemoryInMB:       aws.Int64(int64(m["memory_in_mb"].(int))),
 	}
 
 	return codeConfig
