@@ -502,6 +502,7 @@ func flattenAwsSyntheticsCanaryRunConfig(canaryCodeOut *synthetics.CanaryRunConf
 
 	m := map[string]interface{}{
 		"timeout_in_seconds": aws.Int64Value(canaryCodeOut.TimeoutInSeconds),
+		"memory_in_mb":       aws.Int64Value(canaryCodeOut.MemoryInMB),
 	}
 
 	return []interface{}{m}
