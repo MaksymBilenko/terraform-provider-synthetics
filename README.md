@@ -9,12 +9,13 @@ Once this functionality would be marged to terraform aws provider this repositor
 
 ### main.tf
 ```terraform
-provider "synthetics" {
-  version = "v0.1.1"
-  # assume_role {
-  #   role_arn = var.assume_role_arn
-  # }
-  region = var.region
+terraform {
+  required_providers {
+    synthetics = {
+      source = "MaksymBilenko/synthetics"
+      version = ">=0.1"
+    }
+  }
 }
 
 data "archive_file" "synthetic" {
@@ -45,21 +46,4 @@ resource "synthetics_canary" "terraform-deploy-test" {
     expression          = var.synthetic_schedule.expression
   }
 }
-```
-
-### Init Linux
-
-```bash
-mkdir -p terraform.d/plugins/linux_amd64
-wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.1.1/linux_amd64-terraform-provider-aws-synthetics_v0.1.1 -O terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.1.1
-chmod +x terraform.d/plugins/linux_amd64/terraform-provider-synthetics_v0.1.1
-terraform init
-```
-
-### Init MacOS
-```bash
-mkdir -p terraform.d/plugins/darwin_amd64
-wget https://github.com/MaksymBilenko/terraform-provider-aws-synthetics/releases/download/v0.1.1/darwin_amd64-terraform-provider-aws-synthetics_v0.1.1 -O terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.1.1
-chmod +x terraform.d/plugins/darwin_amd64/terraform-provider-synthetics_v0.1.1
-terraform init
 ```
