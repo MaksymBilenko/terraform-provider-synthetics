@@ -341,6 +341,12 @@ func resourceAwsSyntheticsCanaryUpdate(d *schema.ResourceData, meta interface{})
 		updateFlag = true
 	}
 
+	if d.HasChange("runtime_version") {
+		_, n := d.GetChange("runtime_version")
+		input.RuntimeVersion = aws.String(n.(string))
+		updateFlag = true
+	}
+
 	if updateFlag {
 		canaryStatus, err := conn.GetCanary(&synthetics.GetCanaryInput{Name: aws.String(d.Id())})
 
