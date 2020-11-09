@@ -29,6 +29,7 @@ data "archive_file" "synthetic" {
 
 resource "synthetics_canary" "terraform-deploy-test" {
   name                 = var.synthetic_name
+  runtime_version      = "syn-nodejs-2.1"
   execution_role_arn   = aws_iam_policy.synthetic.arn
   artifact_s3_location = "s3://${aws_s3_bucket.synthetic_artifacts.id}/canary/"
   zip_file             = data.archive_file.synthetic.output_path
