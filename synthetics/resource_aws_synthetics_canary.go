@@ -158,7 +158,7 @@ func resourceAwsSyntheticsCanary() *schema.Resource {
 			},
 			"runtime_version": {
 				Type:     schema.TypeString,
-				Computed: true,
+				Required: true,
 			},
 			"arn": {
 				Type:     schema.TypeString,
@@ -181,7 +181,7 @@ func resourceAwsSyntheticsCanaryCreate(d *schema.ResourceData, meta interface{})
 		Name:               aws.String(d.Get("name").(string)),
 		ArtifactS3Location: aws.String(d.Get("artifact_s3_location").(string)),
 		ExecutionRoleArn:   aws.String(d.Get("execution_role_arn").(string)),
-		RuntimeVersion:     aws.String("syn-1.0"),
+		RuntimeVersion:     aws.String(d.Get("runtime_version").(string)),
 	}
 
 	// if v := d.Get("tags").(map[string]interface{}); len(v) > 0 {
@@ -338,6 +338,12 @@ func resourceAwsSyntheticsCanaryUpdate(d *schema.ResourceData, meta interface{})
 	if d.HasChange("execution_role_arn") {
 		_, n := d.GetChange("execution_role_arn")
 		input.ExecutionRoleArn = aws.String(n.(string))
+		updateFlag = true
+	}
+
+	if d.HasChange("runtime_version") {
+		_, n := d.GetChange("runtime_version")
+		input.RuntimeVersion = aws.String(n.(string))
 		updateFlag = true
 	}
 
