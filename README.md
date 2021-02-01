@@ -18,6 +18,10 @@ terraform {
   }
 }
 
+provider "synthetics" {
+  region = "eu-west-1" #This can also be a var.variablename
+}
+
 data "archive_file" "synthetic" {
   type        = "zip"
   output_path = "${path.module}/files/synthetic.zip"
